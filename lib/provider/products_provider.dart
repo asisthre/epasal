@@ -1,4 +1,4 @@
-import 'package:epasal/model/product.dart';
+import 'package:epasal/provider/product.dart';
 import 'package:flutter/material.dart';
 
 class Products with ChangeNotifier{
@@ -19,7 +19,22 @@ class Products with ChangeNotifier{
         imgUrl: "https://scene7.zumiez.com/is/image/zumiez/pdp_hero/Illegal-Civilization-Script-Light-Blue-T-Shirt-_328090.jpg",
         isFavourite: false),
   ];
-  List<Product> get items{
+  List<Product> get items {
     return [..._items];
+  }
+  Product findById(String id){
+    return items.firstWhere((prod){
+      return prod.id == id;
+    });
+  }
+  void addProduct() {
+    _items.add(
+        Product(id: "fifth",
+        title: "T-shirt",
+        price: 2000,
+        description: "Ebrace the world with your Tee",
+        imgUrl: "https://scene7.zumiez.com/is/image/zumiez/pdp_hero/Illegal-Civilization-Script-Light-Blue-T-Shirt-_328090.jpg",
+        isFavourite: false));
+    notifyListeners();
   }
 }

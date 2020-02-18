@@ -1,26 +1,24 @@
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:epasal/provider/product.dart';
 import 'package:epasal/screens/product_details_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class ProductItem extends StatelessWidget {
-  final String title;
-  final String imgUrl;
-  final String id;
-
-  ProductItem(this.title,this.imgUrl, this.id);
 
   @override
   Widget build(BuildContext context) {
+    final product= Provider.of<Product>(context);
     return ClipRRect(
       borderRadius: BorderRadius.circular(15.0),
       child: GridTile(
         child: GestureDetector(
           onTap: (){
-            Navigator.pushNamed(context, ProductDetails.routeId, arguments: id );
+            Navigator.pushNamed(context, ProductDetails.routeId, arguments: product.id );
           },
           child:   CachedNetworkImage(
-            imageUrl: imgUrl,
+            imageUrl: product.imgUrl,
             fit: BoxFit.cover,
             placeholder: (context, url)=> CircularProgressIndicator(),
             errorWidget: (context, url, error) => Icon(Icons.error),
@@ -29,11 +27,15 @@ class ProductItem extends StatelessWidget {
         footer: GridTileBar(
           backgroundColor: Colors.black87,
           title: Text(
-            title,
+            product.title,
             textAlign: TextAlign.center,
           ),
-          leading: IconButton(icon:Icon(Icons.favorite),
-          onPressed: (){},
+          leading: IconButton(icon:product.isFavourite
+              ?Icon(Icons.favorite)
+              :Icon(Icons.favorite_border),
+          onPressed: (){
+            product.toggleIsFavourite();
+          },
           color: Theme.of(context).accentColor,
           ),
           trailing: IconButton(icon: Icon(Icons.shopping_cart),
