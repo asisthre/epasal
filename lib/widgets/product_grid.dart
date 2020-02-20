@@ -4,9 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class ProductGrid extends StatelessWidget {
+  final bool isShowFavourite;
+
+  ProductGrid({this.isShowFavourite});
+
   @override
   Widget build(BuildContext context) {
-    final loadedProduct = Provider.of<Products>(context).items;
+    final productProvider= Provider.of<Products>(context);
+    final loadedProduct =
+        isShowFavourite ? productProvider.favourites : productProvider.items;
     return GridView.builder(
       itemCount: loadedProduct.length,
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -16,13 +22,9 @@ class ProductGrid extends StatelessWidget {
           childAspectRatio: 3/2
       ),
       itemBuilder: (ctx,i){
-        return Consumer<Products>(
-          builder: (key, builder,_){
-            return ChangeNotifierProvider.value(
-              value: loadedProduct[i],
-              child: ProductItem(),
-            );
-          }
+        return ChangeNotifierProvider.value(
+          value: loadedProduct[i],
+          child: ProductItem(),
         );
       },
     );
