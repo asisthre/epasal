@@ -1,4 +1,6 @@
 import 'package:epasal/provider/cart_provider.dart';
+import 'package:epasal/provider/order_provider.dart';
+import 'package:epasal/screens/order_screen.dart';
 import 'package:epasal/widgets/cart_item.dart'as ci;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -7,7 +9,8 @@ class CartScreen extends StatelessWidget {
   static const String routeId="/cart_screen";
   @override
   Widget build(BuildContext context) {
-    final cart = Provider.of<Cart>(context).items;
+    final cart = Provider.of<Cart>(context);
+    final orders= Provider.of<Orders>(context,listen: false);
     return Scaffold(
       appBar: AppBar(
         title: Text("Your Cart"),
@@ -28,7 +31,7 @@ class CartScreen extends StatelessWidget {
                   ),),
                   Spacer(),
                   Chip(
-                    label: Text("\$100",
+                    label: Text("\$ ${cart.totalAmounts}",
                       style: TextStyle(
                         color: Colors.white,
                       ),),
@@ -41,17 +44,27 @@ class CartScreen extends StatelessWidget {
                       fontSize: 18,
                       color: Theme.of(context).primaryColor,
                     ),),
-                    onPressed: (){},
+                    onPressed: (){
+                      orders.addOrder(cart.items.values.toList(),cart.totalAmounts);
+                      cart.clearCart();
+                      Navigator.pushNamed(context, OrderScreen.routeId);
+                    },
                   ),
                 ],
               ),
-
             ),
           ),
           SizedBox(height: 10,),
           Expanded(
               child: ListView.builder(
-                  itemCount:3, itemBuilder: (context, i)=> ci.CartItem(),
+                itemCount:cart.itemCount,
+                itemBuilder: (context, i)=> ci.CartItem(
+                id:cart.items.values.toList()[i].id,
+                title:cart.items.values.toList()[i].title,
+                productId:cart.items.keys.toList()[i],
+                price:cart.items.values.toList()[i].price,
+                quantity:cart.items.values.toList()[i].quantity,
+              ),
               ),
           ),
         ],
