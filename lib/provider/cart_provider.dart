@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 
 class CartItem{
@@ -60,6 +62,26 @@ class Cart with ChangeNotifier{
   //--this removes all items from cart--
   void clearCart(){
     _items={};
+    notifyListeners();
+  }
+  //----this  removes single item from cart---
+  void removeItem(String productId){
+    if(!_items.containsKey(productId)){
+      return;
+    }
+    if(_items[productId].quantity > 1){
+      _items.update(productId, (existingCartItem){
+        return CartItem(
+          id: existingCartItem.id,
+          title: existingCartItem.title,
+          price: existingCartItem.price,
+          quantity: existingCartItem.quantity-1,
+        );
+      });
+    }
+    else{
+      _items.remove(productId);
+    }
     notifyListeners();
   }
 }
