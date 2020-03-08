@@ -50,6 +50,8 @@ class _ProductOverviewScreenState extends State<ProductOverviewScreen> {
               ),
             ],
           ),
+
+          //-----Consumer always listen to the change.----//
           Consumer<Cart>(
             child: IconButton(
               icon: Icon(Icons.shopping_cart),
