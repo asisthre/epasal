@@ -34,14 +34,33 @@ class Products with ChangeNotifier{
       return prod.id == id;
     });
   }
-  void addProduct() {
-    _items.add(
-        Product(id: "fifth",
-        title: "T-shirt",
-        price: 2000,
-        description: "Ebrace the world with your Tee",
-        imgUrl: "https://scene7.zumiez.com/is/image/zumiez/pdp_hero/Illegal-Civilization-Script-Light-Blue-T-Shirt-_328090.jpg",
-        isFavourite: false));
+
+  //---- this functions adds new product-----
+  void addProduct(Product product) {
+    final newProduct = Product(
+      id: DateTime.now().toString(),
+      title: product.title,
+      price: product.price,
+      description: product.description,
+      imgUrl: product.imgUrl);
+    _items.add(newProduct);
+
+  //  _items.insert(0, newProduct); to add new product at particular index
+    notifyListeners();
+  }
+
+  //------this functions update the current product-----
+  void updateProduct(String id, Product updatedProduct){
+    final prodIndex = _items.indexWhere((prod)=>prod.id == id);
+    if (prodIndex>=0){
+      _items[prodIndex]= updatedProduct;
+      notifyListeners();
+    }
+  }
+
+  //----- this function delets the product-----
+  void deleteProduct(String id){
+    _items.removeWhere((prod)=> prod.id == id);
     notifyListeners();
   }
 }
