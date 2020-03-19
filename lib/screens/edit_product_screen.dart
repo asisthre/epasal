@@ -16,6 +16,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
   final _imgUrlFocusNode= FocusNode();
   final _imgUrlController= TextEditingController();
   final _form =GlobalKey<FormState>();
+  bool _isloading= false;
   var _editedProduct = Product(
     id: null,
     title: '',
@@ -98,13 +99,44 @@ class _EditProductScreenState extends State<EditProductScreen> {
       return;
     }
     _form.currentState.save();
+    setState(() {
+      _isloading=true;
+    });
     if(_editedProduct.id!=null){
       Provider.of<Products>(context, listen: false).updateProduct(_editedProduct.id, _editedProduct);
+      setState(() {
+        _isloading=false;
+      });
     }
     else{
-      Provider.of<Products>(context,listen: false).addProduct(_editedProduct);
+      Provider.of<Products>(context,listen: false).addProduct(_editedProduct)
+          .catchError((error){
+           return showDialog(context: context, builder: (ctx)=> AlertDialog(
+              title: Text('Error Occured'),
+              content: Text('Unable to add product'),
+              actions: <Widget>[
+                FlatButton(
+                  child: Text('OK'),
+                  onPressed: (){
+                    setState(() {
+                      _isloading=false;
+                    });
+                    Navigator.pop(context);
+                    Navigator.pop(context);
+                  },
+                )
+              ],
+            ));
+
+      })
+          .then((_){
+        setState(() {
+          _isloading=false;
+        });
+        Navigator.pop(context);
+      });
     }
-    Navigator.pop(context);
+
   }
 
   @override
@@ -122,7 +154,11 @@ class _EditProductScreenState extends State<EditProductScreen> {
         ],
 
       ),
-      body: Padding(
+      body: _isloading
+          ? Center(
+            child: CircularProgressIndicator(),
+          )
+      :Padding(
         padding: EdgeInsets.all(16),
         child: Form(
           key: _form,

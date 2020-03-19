@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "321737795729",
+    "firebase_url": "https://epasal-bf0f2.firebaseio.com",
+    "project_id": "epasal-bf0f2",
+    "storage_bucket": "epasal-bf0f2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:321737795729:android:5024db1587c4eac7053730",
+        "android_client_info": {
+          "package_name": "com.example.epasal"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "321737795729-7thoqscmuf63s4t5nkpf3rpuksabs9q9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCetGIdaB4ZPC-gSTbS832DsTsEaR83GQA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "321737795729-7thoqscmuf63s4t5nkpf3rpuksabs9q9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
